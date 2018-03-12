@@ -15,6 +15,7 @@
         <script src="../node_modules/angular/angular.min.js"></script>
 
         <script src="../node_modules/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
+        <script src="../node_modules/papaparse/papaparse.min.js"></script>
 
         <script src="assets/js/app.js"></script>
         <script src="assets/js/router.js"></script>
@@ -25,6 +26,18 @@
     </head>
     <body>
         <div ng-app="PBA">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" ui-sref="home">Postbac Analytics</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" ui-sref="admin">Administration</a>
+                        <a class="nav-item nav-link" ui-sref="analyze">Analyse</a>
+                    </div>
+                </div>
+            </nav>
             <div class="container">
                 <div ui-view ></div>
             </div>

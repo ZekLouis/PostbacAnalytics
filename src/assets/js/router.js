@@ -2,11 +2,27 @@ PBA.config(['$stateProvider', '$urlRouterProvider', function( $stateProvider, $u
     $urlRouterProvider.otherwise('/');
 
     var homeState = {
-        name: 'home', // nom de l'état, utilisable pour désigner l'état autrement que par l'url
-        url: '/',	// url correspondant à l'état
-        templateUrl: './assets/views/home.template.html', // vue à charger pour cet état
-        controller: 'HomeCtrl as home'  // controller à utiliser pour populer la vue
+        name: 'home',
+        url: '/',
+        templateUrl: './assets/views/home.template.html',
+        controller: 'HomeCtrl as home'
     };
-    
-    $stateProvider.state( homeState ); // et on enregistre le tout pour rendre cet état disponible
+
+    var adminState = {
+        name: 'admin',
+        url: '/admin',
+        templateUrl: './assets/views/admin.template.html',
+        controller: 'AdminCtrl as admin'
+    };
+
+    var analyzeState = {
+        name: 'analyze',
+        url: '/analyze',
+        templateUrl: './assets/views/analyze.template.html',
+        controller: 'AnalyzeCtrl as analyze'
+    };
+
+    $stateProvider.state( homeState );
+    $stateProvider.state( adminState );
+    $stateProvider.state( analyzeState );
 }]);
