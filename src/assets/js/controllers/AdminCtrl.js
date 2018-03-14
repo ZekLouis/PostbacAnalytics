@@ -14,7 +14,7 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', function ($scope, dataServ
             Papa.parse(reader.result, {
                 header: true,
                 complete: function(results) {
-                    if (results.errors.length == 0) {
+                    if (results.data.length > 0) {
                         var new_plot = {
                             name: name,
                             data: results.data

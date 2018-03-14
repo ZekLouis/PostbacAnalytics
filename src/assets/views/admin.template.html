@@ -8,15 +8,17 @@
 <h2>Lots importées</h2>
 <table class="table table-striped">
     <thead>
-      <tr>
-        <th scope="col">Nom</th>
-        <th scope="col">Nombre de candidatures</th>
-      </tr>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Renommer</th>
+            <th scope="col">Nombre de candidatures</th>
+        </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="(key, value) in admin.plots">
-        <th scope="row">{{value.name}}</th>
-        <th scope="row">{{value.length}}</th>
-      </tr>
+        <tr ng-repeat="(key, value) in admin.plots">
+            <th scope="row">{{value.name}}</th>
+            <th scope="row"><input class="form-control" ng-model="value.name" ng-value="value.name" type="text"></th>
+            <th scope="row">{{value.data.length}}</th>
+        </tr>
     </tbody>
   </table>
