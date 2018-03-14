@@ -1,1 +1,21 @@
 <h2>Map</h2>
+
+<div class="zone-map" id="map"></div>
+
+
+<script>
+    function initMap() {
+        var limoges = {lat: 45.833748, lng: 1.257645};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 11,
+            center: limoges
+        });
+        var marker = new google.maps.Marker({
+            position: limoges,
+            map: map
+        });
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-zAE8umUUIT3FSoFiFYyChRuR5YsPge0&callback=initMap">
+</script>
