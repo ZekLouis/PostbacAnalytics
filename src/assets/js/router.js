@@ -22,7 +22,23 @@ PBA.config(['$stateProvider', '$urlRouterProvider', function( $stateProvider, $u
         controller: 'AnalyzeCtrl as analyze'
     };
 
+    var analyzeMapState = {
+        name: 'analyze.map',
+        url: '/map',
+        templateUrl: './assets/views/map.partial.html'
+    };
+
+    var analyzeGraphsState = {
+        name: 'analyze.graphs',
+        url: '/graphs',
+        templateUrl: './assets/views/graphs.partial.html'
+    };
+
+
     $stateProvider.state( homeState );
     $stateProvider.state( adminState );
     $stateProvider.state( analyzeState );
+    $stateProvider.state( analyzeMapState );
+    $stateProvider.state( analyzeGraphsState );
+
 }]);
