@@ -22,7 +22,7 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', function ($scope, dataServ
                         dataService.addNewPlot(new_plot);
                         $scope.$apply();
                     } else {
-                        console.log('Error during import :' + results.errors)
+                        console.log('Error during import :', results.errors)
                     }
                 }
             })
