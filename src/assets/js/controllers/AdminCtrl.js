@@ -2,9 +2,9 @@
 
 PBA.controller('AdminCtrl', ['$scope', 'dataService', function ($scope, dataService) {
     var self = this;
+    self.plots = dataService.plots;
 
     $scope.uploadFile = function(element) {
-        console.log('coucou')
         var reader = new FileReader();
         var files = element.files;
         var name = '';
@@ -20,8 +20,7 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', function ($scope, dataServ
                             data: results.data
                         };
                         dataService.addNewPlot(new_plot);
-                        $scope.$apply()
-                        console.log(self.getPlots())
+                        $scope.$apply();
                     } else {
                         console.log('Error during import :' + results.errors)
                     }
@@ -36,9 +35,5 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', function ($scope, dataServ
         } else {
             console.log('file not selected');
         }        
-    };
-
-    self.getPlots = function() {
-        return dataService.getPlots();
     };
 }]);
