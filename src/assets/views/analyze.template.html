@@ -1,14 +1,23 @@
 <h1>Analyze</h1>
 
-<a class="btn-primary btn" ui-sref="analyze.map">Afficher carte</a>
-<a class="btn-primary btn" ui-sref="analyze.graphs">Afficher graphiques</a>
+<a ng-click="analyze.debug()" class="btn-primary btn">Debug</a>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" ui-sref="analyze.map">Carte</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" ui-sref="analyze.graphs">Graphiques</a>
+    </li>
+</ul>
+
 <div class="row">
     <div class="col">
         <h3>Sélection des lots</h3>
-        <div ng-repeat="(key, value) in analyze.getPlotsList()" class="form-check">
-            <input class="form-check-input" type="checkbox" value="{{value.value}}" id="defaultCheck1">
-            <label class="form-check-label" for="defaultCheck1">
-                {{value.text}}
+        <div ng-repeat="(key, value) in analyze.plots" class="form-check">
+            <input class="form-check-input" ng-model="value.selected" type="checkbox" value="{{key}}" id="lot-{{key}}">
+            <label class="form-check-label" for="lot-{{key}}">
+                {{value.name}}
             </label>
         </div>
     </div>
