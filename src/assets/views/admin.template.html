@@ -3,6 +3,7 @@
 <hr>
 <h2>Import de lots</h2>
 <input type="file" onchange="angular.element(this).scope().uploadFile(this)">
+<div ng-show="admin.loading" class="loader"></div>
 <!--<button class="btn btn-primary" ng-click="admin.uploadFile()">Upload</button>-->
 <hr>
 <h2>Lots importées</h2>
