@@ -11,7 +11,10 @@ PBA.service('dataService', function(){
     self.getPlotsList = function() {
         var list = [];
         for (var plot in self.plots) {
-            list.push(self.plots[plot].name + self.plots[plot].data.length);
+            list.push({
+                value: plot,
+                text: self.plots[plot].value
+            });
         }
         return list;
     };
