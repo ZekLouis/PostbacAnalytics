@@ -2,15 +2,6 @@
 
 <a ng-click="analyze.debug()" class="btn-primary btn">Debug</a>
 
-<ul class="nav nav-tabs">
-    <li class="nav-item">
-        <a class="nav-link" ui-sref="analyze.map">Carte</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" ui-sref="analyze.graphs">Graphiques</a>
-    </li>
-</ul>
-
 <div class="row">
     <div class="col">
         <h3>Sélection des lots</h3>
@@ -21,7 +12,17 @@
             </label>
         </div>
     </div>
-    <div ui-view class="col-6" ></div>
+    <div class="col-6">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" ui-sref="analyze.map">Mode carte</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref="analyze.graphs">Mode graphique</a>
+            </li>
+        </ul>
+        <div ui-view></div>
+    </div>
     <div class="col">
         <h3>Filtres</h3>
         <fieldset class="form-group row">
