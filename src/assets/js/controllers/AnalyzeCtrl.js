@@ -6,4 +6,7 @@ PBA.controller('AnalyzeCtrl', ['dataService', 'mapService', function (dataServic
 
     console.log(self.plots);
 
+    self.getPlotsList = function() {
+        return dataService.getPlotsList();
+    }
 }]);
