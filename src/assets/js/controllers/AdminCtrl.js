@@ -18,9 +18,18 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', function ($scope, dataServ
                 complete: function(results) {
                     self.loading = false;
                     if (results.data.length > 0) {
+                        var data = [];
+                        // removing empty candit generated with empty lines
+                        for(var candit in results.data) {
+                            candit = results.data[candit];
+                            if(candit['Code groupe'] != '') {
+                                data.push(candit);
+                            }
+                        }
+
                         var new_plot = {
                             name: name,
-                            data: results.data,
+                            data: data,
                             selected: 0
                         };
                         dataService.addNewPlot(new_plot);

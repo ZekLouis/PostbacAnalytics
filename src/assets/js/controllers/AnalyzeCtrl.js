@@ -1,10 +1,9 @@
 'use strict';
 
-PBA.controller('AnalyzeCtrl', ['dataService', 'mapService', function (dataService) {
+PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', function ($scope, dataService) {
     var self = this;
     self.plots = dataService.plots;
-
-    console.log(self.plots);
+    $scope.pieData = dataService.getPieData();
 
     self.getPlotsList = function() {
         return dataService.getPlotsList();
