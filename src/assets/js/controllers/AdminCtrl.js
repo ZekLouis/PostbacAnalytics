@@ -1,6 +1,6 @@
 'use strict';
 
-PBA.controller('AdminCtrl', ['$scope', 'dataService', function ($scope, dataService) {
+PBA.controller('AdminCtrl', ['$scope', 'dataService', 'filterService', function ($scope, dataService, filterService) {
     var self = this;
     self.plots = dataService.plots;
     self.loading = false;
@@ -33,6 +33,8 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', function ($scope, dataServ
                             selected: 0
                         };
                         dataService.addNewPlot(new_plot);
+                        filterService.updatePlots(self.plots);
+
                         element.value = '';
 
                         $scope.$apply();
