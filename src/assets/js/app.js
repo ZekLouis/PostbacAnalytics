@@ -1,1 +1,1 @@
-var PBA = angular.module("PBA", ['ui.router']);
+var PBA = angular.module("PBA", ['ui.router', 'ngMap']);
