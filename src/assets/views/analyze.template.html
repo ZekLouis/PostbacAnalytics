@@ -8,7 +8,7 @@
     <div class="col">
         <h3>Sélection des lots</h3>
         <div ng-repeat="(key, value) in analyze.plots" class="form-check">
-            <input class="form-check-input" ng-model="value.selected" type="checkbox" value="{{key}}" id="lot-{{key}}" ng-checked=" analyze.selectedPlots[key]" >
+            <input class="form-check-input" ng-click="analyze.refresh()" ng-model="value.selected" type="checkbox" value="{{key}}" id="lot-{{key}}" ng-checked="analyze.selectedPlots[key]">
             <label class="form-check-label" for="lot-{{key}}">
                 {{value.name}}
             </label>

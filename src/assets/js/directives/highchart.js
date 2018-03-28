@@ -1,4 +1,4 @@
-PBA.directive('hcPieChart', function() {
+PBA.directive('highchart', function() {
     return {
         restrict: 'E',
         template: '<div></div>',
@@ -7,7 +7,6 @@ PBA.directive('hcPieChart', function() {
             data: '='
         },
         link: function (scope, element) {
-            console.log(scope);
             Highcharts.chart(element[0], {
                 title: {
                     text: 'Combination chart'

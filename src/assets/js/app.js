@@ -1,1 +1,1 @@
-var PBA = angular.module("PBA", ['ui.router', 'ngMap']);
+var PBA = angular.module("PBA", ['ui.router', 'highcharts-ng', 'ngMap']);

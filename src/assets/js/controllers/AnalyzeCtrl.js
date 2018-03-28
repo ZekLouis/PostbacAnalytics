@@ -4,7 +4,7 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
     var self = this;
     self.plots = dataService.plots;
     self.selectedPlots = filterService.getSelectedPlots();
-    $scope.pieData = dataService.getPieData();
+    $scope.pieData = dataService.pieData;
 
     self.googleMapsKey = mapService.googleMapsKey;
     $scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=" + self.googleMapsKey;
@@ -23,6 +23,11 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
     };
 
     self.debug = function() {
-        console.log(self.plots);
+        console.log($scope.pieData);
+    };
+
+    self.refresh = function() {
+        dataService.update();
+        console.log($scope.pieData)
     };
 }]);
