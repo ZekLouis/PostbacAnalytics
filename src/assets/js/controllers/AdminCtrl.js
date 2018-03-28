@@ -30,7 +30,7 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', function ($scope, dataServ
                         var new_plot = {
                             name: name,
                             data: data,
-                            selected: 0
+                            selected: false
                         };
                         dataService.addNewPlot(new_plot);
                         element.value = '';
