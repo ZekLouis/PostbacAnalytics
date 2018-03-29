@@ -3,5 +3,10 @@
 <div map-lazy-load="https://maps.google.com/maps/api/js"
      map-lazy-load-params="{{googleMapsUrl}}"
      class="zone-map" id="map">
-    <ng-map center="45.8586196,1.1618582" zoom="11"></ng-map>
+    <ng-map center="45.8586196,1.1618582" zoom="11">
+        <marker ng-repeat="item in mapPoints track by $index"
+                position="{{item.lat}}, {{item.lng}}">
+        </marker>
+
+    </ng-map>
 </div>
