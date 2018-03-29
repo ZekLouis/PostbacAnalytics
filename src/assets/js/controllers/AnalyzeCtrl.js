@@ -28,6 +28,5 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
 
     self.refresh = function() {
         dataService.update();
-        console.log($scope.pieData)
     };
 }]);

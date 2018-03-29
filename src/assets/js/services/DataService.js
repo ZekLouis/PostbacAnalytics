@@ -2,45 +2,39 @@
 
 PBA.service('dataService', function(){
     var self = this;
+    var seriesId = 0;
     self.plots = [];
-    /* self.pieData = {
-        chart: {
-            height: 500,
-            width: 500,
-            type: 'line'
-        },
-        plotOptions: {
-            series: {
-                stacking: ''
-            }
-        },
-        series: [
-            {"name": "Some data", "data": [1, 2, 4, 7, 3], id: 's1'},
-            {"name": "Some data 3", "data": [3, 1, null, 5, 2], connectNulls: true, id: 's2'},
-            {"name": "Some data 2", "data": [5, 2, 2, 3, 5], type: "column", id: 's3'},
-            {"name": "My Super Column", "data": [1, 1, 2, 3, 2], type: "column", id: 's4'}
-        ],
-        title: {
-            text: 'Hello'
-        }
-    }; */
     self.pieData = {
         chart: {
-            height: 500,
-            width: 500,
-            type: 'line'
+            type: 'column'
         },
-        plotOptions: {
-            series: {
-                stacking: ''
-            }
-        },
-        series: [],
         title: {
-            text: 'Types de BAC'
-        }
+            text: 'Type de BAC'
+        },
+        xAxis: {
+            categories: []
+        },
+        credits: {
+            enabled: false
+        },
+        series: []
     };
-    // self.bacList = [];
+
+    /* self.default_pieData = {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Type de BAC'
+        },
+        xAxis: {
+            categories: []
+        },
+        credits: {
+            enabled: false
+        },
+        series: []
+    }; */
 
     self.addNewPlot = function(new_plot) {
         self.plots.push(new_plot);
@@ -69,28 +63,7 @@ PBA.service('dataService', function(){
         return list;
     };
 
-    /* self.calcBacList = function() {
-        var bacList = {};
-        for(var plot in self.plots) {
-            plot = self.plots[plot];
-            for(var candit in plot.data) {
-                candit = plot.data[candit];
-
-                // check is this série exists
-                if (bacList[candit['Série']] == undefined) {
-                    bacList[candit['Série']] = {
-                        count: 1
-                    }
-                } else {
-                    bacList[candit['Série']].count ++;
-                }
-            }
-        }
-
-        self.bacList = bacList;
-    }; */
-
-    /* self.getPieData = function() {
+    self.calcGraphData = function() {
         var stats = {};
         // generate categories
         var graphData = {categories: [], data:[]};
@@ -102,6 +75,7 @@ PBA.service('dataService', function(){
                 continue;
             }
             graphData.categories.push(plot.name);
+            // graphData.categories.push(plot.name);
             for (var can in plot.data) {
                 can = plot.data[can];
 
@@ -123,8 +97,11 @@ PBA.service('dataService', function(){
             var newBac = {
                 type: 'column',
                 name: bacName,
-                data: []
+                data: [],
+                id: seriesId
             };
+
+            seriesId++;
 
             for (var count in bac) {
                 var index = graphData.categories.indexOf(count);
@@ -145,70 +122,17 @@ PBA.service('dataService', function(){
 
         }
 
-        return graphData;
-    }; */
+        // var newPieData = self.default_pieData;
 
-    self.calcGraphData = function() {
-        var stats = {};
-        // generate categories
-        var graphData = {categories: [], data:[]};
-        for (var plot in self.plots) {
-            plot = self.plots[plot];
+        self.pieData.xAxis.categories = graphData.categories;
+        self.pieData.series = graphData.data;
 
-            // if plot not selected go to next plot
-            if(!plot.selected) {
-                continue;
-            }
-            graphData.categories.push(plot.name);
-            for (var can in plot.data) {
-                can = plot.data[can];
+        // self.pieData = newPieData;
 
-                if(stats[can['Série']] == undefined) {
-                    stats[can['Série']] = {};
-                }
-
-                if(stats[can['Série']][plot.name] == undefined) {
-                    stats[can['Série']][plot.name] = 0;
-                } else {
-                    stats[can['Série']][plot.name] ++;
-                }
-            }
-        }
-
-        self.pieData.series.data = [];
-        console.log(stats);
-        for (var bacName in stats) {
-            var bac = stats[bacName];
-            var newBac = {
-                type: 'column',
-                name: bacName,
-                data: []
-            };
-
-            for (var count in bac) {
-                var index = graphData.categories.indexOf(count);
-                newBac.data[index] = bac[count];
-            }
-            if(bacName != "") {
-                self.pieData.series.push(newBac)
-            }
-        }
-
-        // add 0 for BAC that are not present in this plot
-        for (var d in graphData.data) {
-            d = graphData.data[d];
-            var length = graphData.categories.length;
-            if (d.data.length < length) {
-                d.data.push(0);
-            }
-
-        }
-
-        return graphData;
+        console.log(JSON.stringify(self.pieData));
     };
 
     self.update = function() {
-        //self.calcBacList();
         self.calcGraphData();
     };
 });
