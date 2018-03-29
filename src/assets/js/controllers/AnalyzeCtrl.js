@@ -15,6 +15,5 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', function ($scope, dataSe
 
     self.refresh = function() {
         dataService.update();
-        console.log($scope.pieData)
     };
 }]);
