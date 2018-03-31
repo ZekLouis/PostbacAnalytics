@@ -19,7 +19,7 @@
         <tbody>
             <tr ng-repeat="(key, value) in admin.plots">
                 <th scope="row">{{value.name}}</th>
-                <th scope="row"><input class="form-control" ng-model="value.name" ng-value="value.name" type="text"></th>
+                <th scope="row"><input class="form-control" ng-change="admin.update()" ng-model="value.name" ng-value="value.name" type="text"></th>
                 <th scope="row">{{value.data.length}}</th>
             </tr>
         </tbody>
