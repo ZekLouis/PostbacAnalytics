@@ -5,6 +5,10 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', function ($scope, dataServ
     self.plots = dataService.plots;
     self.loading = false;
 
+    self.update = function() {
+        dataService.update();
+    };
+
     $scope.uploadFile = function(element) {
         var reader = new FileReader();
         var files = element.files;

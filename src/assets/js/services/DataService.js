@@ -75,7 +75,6 @@ PBA.service('dataService', function(){
                 continue;
             }
             graphData.categories.push(plot.name);
-            // graphData.categories.push(plot.name);
             for (var can in plot.data) {
                 can = plot.data[can];
 
@@ -104,8 +103,7 @@ PBA.service('dataService', function(){
             seriesId++;
 
             for (var count in bac) {
-                var index = graphData.categories.indexOf(count);
-                newBac.data[index] = bac[count];
+                newBac.data.push(bac[count]);
             }
             if(bacName != "") {
                 graphData.data.push(newBac)
@@ -129,7 +127,7 @@ PBA.service('dataService', function(){
 
         // self.pieData = newPieData;
 
-        console.log(JSON.stringify(self.pieData));
+        // console.log(JSON.stringify(self.pieData));
     };
 
     self.update = function() {
