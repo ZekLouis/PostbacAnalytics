@@ -37,10 +37,9 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', 'filterService', function 
                             selected: false
                         };
                         dataService.addNewPlot(new_plot);
-                        filterService.updatePlots(self.plots);
 
+                        // empty the file input
                         element.value = '';
-
                         $scope.$apply();
                     } else {
                         console.log('Error during import :', results.errors)

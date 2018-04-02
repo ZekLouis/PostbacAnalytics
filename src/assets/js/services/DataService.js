@@ -1,6 +1,6 @@
 'use strict';
 
-PBA.service('dataService', function(){
+PBA.service('dataService',['filterService', function(filterService){
     var self = this;
     var seriesId = 0;
     self.plots = [];
@@ -19,22 +19,6 @@ PBA.service('dataService', function(){
         },
         series: []
     };
-
-    /* self.default_pieData = {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Type de BAC'
-        },
-        xAxis: {
-            categories: []
-        },
-        credits: {
-            enabled: false
-        },
-        series: []
-    }; */
 
     self.addNewPlot = function(new_plot) {
         self.plots.push(new_plot);
@@ -77,13 +61,19 @@ PBA.service('dataService', function(){
             graphData.categories.push(plot.name);
             for (var can in plot.data) {
                 can = plot.data[can];
+                var bac = can['Série'];
+
+                // if this bac is not selected go to the next bac
+                if(bac === '' || !filterService.bac_list[bac].selected) {
+                    continue;
+                }
 
                 if(stats[can['Série']] == undefined) {
                     stats[can['Série']] = {};
                 }
 
                 if(stats[can['Série']][plot.name] == undefined) {
-                    stats[can['Série']][plot.name] = 0;
+                    stats[can['Série']][plot.name] = 1;
                 } else {
                     stats[can['Série']][plot.name] ++;
                 }
@@ -120,17 +110,12 @@ PBA.service('dataService', function(){
 
         }
 
-        // var newPieData = self.default_pieData;
-
         self.pieData.xAxis.categories = graphData.categories;
         self.pieData.series = graphData.data;
-
-        // self.pieData = newPieData;
-
-        // console.log(JSON.stringify(self.pieData));
     };
 
     self.update = function() {
+        filterService.calcBacList(self.plots);
         self.calcGraphData();
     };
-});
+}]);

@@ -2,34 +2,34 @@
 
 PBA.service('filterService', function(){
     var self = this;
-    self.selectedPlots = [];
+    self.bac_list = {};
 
+    self.filters_list = {
+        '% Boursiers' : {
+            enabled: false,
+            ifunction: self.filterBoursiers
+        },
+        '% Hommes / Femmes' : {
+            enabled: false,
+            ifunction: self.filterBoursiers
+        }
+    };
 
-    self.getFilteredPlots = function (plots) {
+    self.filterBoursiers = function () {
 
-        var filteredPlots = [];
+    };
 
-        plots.forEach(function(plot, index){
-            if(self.selectedPlots[index]){
-                filteredPlots.push(plot);
+    self.calcBacList = function(plots) {
+        for(var plot in plots) {
+            plot = plots[plot];
+            for(var candit in plot.data) {
+                candit = plot.data[candit];
+                if (self.bac_list[candit['Série']] === undefined && candit['Série'] !== '') {
+                    self.bac_list[candit['Série']] = {
+                        selected: true
+                    }
+                }
             }
-        });
-
-        return filteredPlots;
-
+        }
     };
-
-    self.getSelectedPlots = function () {
-        return self.selectedPlots;
-    };
-
-    self.updatePlots = function(plots) {
-
-        plots.forEach(function (plot, index) {
-            self.selectedPlots[index] = 1;
-        });
-
-    };
-
-
 });

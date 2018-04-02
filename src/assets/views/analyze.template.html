@@ -1,14 +1,13 @@
 <div class="container">
-    <h1>Analyze</h1>
-    <a ng-click="analyze.debug()" class="btn-primary btn">Debug</a>
-    <a ng-click="analyze.debugMap()" class="btn-primary btn">Update Map</a>
+    <h1>Analyse</h1>
+    <!--<a ng-click="analyze.debug()" class="btn-primary btn">Debug</a>-->
 </div>
 
 <div class="row">
     <div class="col">
         <h3>Sélection des lots</h3>
         <div ng-repeat="(key, value) in analyze.plots" class="form-check">
-            <input class="form-check-input" ng-click="analyze.refresh()" ng-model="value.selected" type="checkbox" value="{{key}}" id="lot-{{key}}" ng-checked="analyze.selectedPlots[key]">
+            <input class="form-check-input" ng-click="analyze.refresh()" ng-model="value.selected" type="checkbox" value="{{key}}" id="lot-{{key}}">
             <label class="form-check-label" for="lot-{{key}}">
                 {{value.name}}
             </label>
@@ -28,12 +27,12 @@
     <div class="col">
         <h3>Filtres</h3>
         <fieldset class="form-group row">
-            <legend class="col-form-legend">Tri par Série de bac</legend>
+            <legend class="col-form-legend">Série de bac</legend>
             <div class="col-sm-10">
-                <div class="form-check" ng-repeat="data in pieData.data">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="serie_bac" id="serie_bac1" value="option1" checked>
-                        {{ data.name }}
+                <div class="form-check" ng-repeat="(key, data) in analyze.bacList">
+                    <input class="form-check-input" ng-click="analyze.refresh()" ng-model="data.selected" type="checkbox" value="{{key}}" id="lot-bac-{{key}}">
+                    <label class="form-check-label" for="lot-bac-{{key}}">
+                        {{key}}
                     </label>
                 </div>
             </div>
