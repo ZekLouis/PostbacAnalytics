@@ -20,6 +20,8 @@ PBA.service('dataService',['filterService', function(filterService){
         series: []
     };
 
+    self.mapCans = [];
+
     self.addNewPlot = function(new_plot) {
         self.plots.push(new_plot);
         self.update();
@@ -45,6 +47,30 @@ PBA.service('dataService',['filterService', function(filterService){
             });
         }
         return list;
+    };
+
+    self.updateMapPlots = function() {
+
+        var mapCans = [];
+
+        for (var plot in self.plots) {
+            plot = self.plots[plot];
+            // if plot not selected go to next plot
+            if(!plot.selected) {
+                continue;
+            }
+            for (var can in plot.data) {
+                can = plot.data[can];
+                var bac = can['Série'];
+
+                // if this bac is not selected go to the next bac
+                if(bac === '' || !filterService.bac_list[bac].selected) {
+                    continue;
+                }
+                mapCans.push(can);
+            }
+        }
+        self.mapCans = mapCans;
     };
 
     self.calcGraphData = function() {
@@ -117,5 +143,6 @@ PBA.service('dataService',['filterService', function(filterService){
     self.update = function() {
         filterService.calcBacList(self.plots);
         self.calcGraphData();
+        self.updateMapPlots();
     };
 }]);

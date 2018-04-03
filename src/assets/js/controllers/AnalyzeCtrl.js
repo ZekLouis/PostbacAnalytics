@@ -20,7 +20,8 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
     };
 
     self.refresh = function() {
+
         dataService.update();
-        mapService.updatePointsFromPlots(self.plots);
+        mapService.update(dataService.mapCans);
     };
 }]);

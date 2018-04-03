@@ -22,12 +22,14 @@ PBA.service('mapService', function(){
                 $.ajax({
                     url: "https://maps.googleapis.com/maps/api/geocode/json?address="+address+",+CA&key=" + self.googleMapsKey,
                     success: function(result){
-                        if(result.results.length > 0) {
+                        if(result.status !== 'OVER_QUERY_LIMIT' && result.results[0] !== undefined) {
                             self.coordinates[address] = result.results[0].geometry.location;
                             self.addPoint(result.results[0].geometry.location);
+
                         } else {
-                            self.api_status = 'OVER_QUERY_LIMIT';
+
                             if (result.status === 'OVER_QUERY_LIMIT') {
+                                self.api_status = 'OVER_QUERY_LIMIT';
                                 console.error('Too much API request');
                             }
                         }
@@ -39,16 +41,20 @@ PBA.service('mapService', function(){
         }
     };
     
-    self.updatePointsFromPlots = function (plots) {
-        plots.forEach(function (plot) {
-            plot.data.forEach(function (student) {
+    self.updatePointsFromCans = function (mapCans) {
+
+        while(self.mapPoints.length > 0) {
+            self.mapPoints.pop();
+        }
+        mapCans.forEach(function (can) {
                 if(self.api_status !== 'OVER_QUERY_LIMIT') {
-                    self.addPointFromAddress(student['Libellé établissement']);
+                    self.addPointFromAddress(can['Libellé établissement']);
                 }
             });
-        });
-        // todo ? check if really needed
-        // google.maps.event.trigger(map,'resize')
-    }
+    };
+
+    self.update = function (mapCans) {
+        self.updatePointsFromCans(mapCans);
+    };
 
 });
