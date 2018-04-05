@@ -17,7 +17,6 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', 'filterService', function 
 
         // event on reader load -> load "lots" in the service
         reader.onload = function(e) {
-            console.log(e.target.result);
             Papa.parse(reader.result, {
                 header: true,
                 complete: function(results) {
@@ -37,7 +36,6 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', 'filterService', function 
                             data: data,
                             selected: false
                         };
-                        console.log(new_plot);
                         dataService.addNewPlot(new_plot);
 
                         // empty the file input
@@ -53,7 +51,6 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', 'filterService', function 
         // if a file is selected -> read it
         if (files.length > 0){
             name = files[0].name;
-            console.log(files[0]);
             reader.readAsText(files[0], 'ISO-8859-4');
         } else {
             console.log('file not selected');

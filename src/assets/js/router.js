@@ -34,11 +34,18 @@ PBA.config(['$stateProvider', '$urlRouterProvider', function( $stateProvider, $u
         templateUrl: './assets/views/graphs.partial.html'
     };
 
+    var todoListState = {
+        name: 'todo-list',
+        url: '/todo-list',
+        templateUrl: './assets/views/todo.template.html'
+    };
+
 
     $stateProvider.state( homeState );
     $stateProvider.state( adminState );
     $stateProvider.state( analyzeState );
     $stateProvider.state( analyzeMapState );
     $stateProvider.state( analyzeGraphsState );
+    $stateProvider.state( todoListState );
 
 }]);
