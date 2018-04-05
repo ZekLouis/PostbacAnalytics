@@ -52,6 +52,7 @@ PBA.service('dataService',['filterService', function(filterService){
     self.updateMapPlots = function() {
 
         var mapCans = [];
+        var nbTotalCandidatures = 0;
 
         for (var plot in self.plots) {
             plot = self.plots[plot];
@@ -67,10 +68,17 @@ PBA.service('dataService',['filterService', function(filterService){
                 if(bac === '' || !filterService.bac_list[bac].selected) {
                     continue;
                 }
-                mapCans.push(can);
+
+                if(mapCans[can['Libellé établissement']] === undefined){
+                    mapCans[can['Libellé établissement']] = [];
+                }
+
+                mapCans[can['Libellé établissement']].push(can);
+                nbTotalCandidatures++;
             }
         }
-        self.mapCans = mapCans;
+
+        self.mapCans = {lycees:mapCans, 'nbTotalCandidatures':nbTotalCandidatures };
     };
 
     self.calcGraphData = function() {

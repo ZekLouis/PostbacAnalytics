@@ -15,13 +15,22 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
         return dataService.getPlotsList();
     };
 
+    self.getNbCandidatures = function() {
+        return mapService.nbTotalCandidatures;
+    };
+
+    self.getPercentageFromTotalCandidatures = function (nbCandidature) {
+        return (nbCandidature/self.getNbCandidatures()*100).toFixed(2);
+    };
+
     self.debug = function() {
-        console.log(self.bacList);
+        console.log(self.plots);
     };
 
     self.refresh = function() {
 
         dataService.update();
         mapService.update(dataService.mapCans);
+
     };
 }]);

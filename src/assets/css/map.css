@@ -1,4 +1,33 @@
-gm-map{
-    height: 500px;
-    border: 1px black solid;
+.details-map {
+    border-radius: 50%;
+    position: relative;
+    background: #4286f4;
+    padding: 10px;
+    color:white;
+    font-size: 12px;
+}
+.details-map:after, .arrow_box:before {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.details-map:after {
+    border-color: rgba(66, 134, 244, 0);
+    border-top-color: #4286f4;
+    border-width: 20px;
+    margin-left: -20px;
+    margin-top: -10px;
+}
+.details-map:before {
+    border-color: rgba(194, 225, 245, 0);
+    border-top-color: #c2e1f5;
+    border-width: 36px;
+    margin-left: -36px;
+    margin-top: -10px;
 }

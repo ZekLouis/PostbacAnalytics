@@ -6,17 +6,20 @@ PBA.service('mapService', function(){
     self.googleMapsKey = "AIzaSyD-zAE8umUUIT3FSoFiFYyChRuR5YsPge0";
     self.api_status = '';
 
+    self.nbTotalCandidatures = 0;
     self.mapPoints = [];
     self.coordinates = {};
 
-    self.addPoint = function (point) {
-        self.mapPoints.push(point);
+    self.addPoint = function (point, data) {
+
+        self.mapPoints.push({'point':point, 'nbCandidatures': data.length});
     };
 
-    self.addPointFromAddress = function(address) {
+    self.addPointFromAddress = function(address, data) {
+
         // check if we already have this information to avoid calling google' api
         if(self.coordinates[address] !== undefined) {
-            self.addPoint(self.coordinates[address]);
+            self.addPoint(self.coordinates[address], data);
         } else {
             if(self.api_status !== 'OVER_QUERY_LIMIT') {
                 $.ajax({
@@ -24,7 +27,7 @@ PBA.service('mapService', function(){
                     success: function(result){
                         if(result.status !== 'OVER_QUERY_LIMIT' && result.results[0] !== undefined) {
                             self.coordinates[address] = result.results[0].geometry.location;
-                            self.addPoint(result.results[0].geometry.location);
+                            self.addPoint(result.results[0].geometry.location, data);
 
                         } else {
 
@@ -46,14 +49,16 @@ PBA.service('mapService', function(){
         while(self.mapPoints.length > 0) {
             self.mapPoints.pop();
         }
-        mapCans.forEach(function (can) {
-                if(self.api_status !== 'OVER_QUERY_LIMIT') {
-                    self.addPointFromAddress(can['Libellé établissement']);
-                }
-            });
+        Object.keys(mapCans.lycees).forEach(function (key) {
+
+            if(self.api_status !== 'OVER_QUERY_LIMIT') {
+                self.addPointFromAddress(key, mapCans.lycees[key]);
+            }
+        });
     };
 
     self.update = function (mapCans) {
+        self.nbTotalCandidatures = mapCans.nbTotalCandidatures;
         self.updatePointsFromCans(mapCans);
     };
 
