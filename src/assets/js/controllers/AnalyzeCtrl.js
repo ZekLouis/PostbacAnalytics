@@ -33,4 +33,10 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
         mapService.update(dataService.mapCans);
 
     };
+
+    self.ctrlConsole = function (event, item) {
+        console.log(item);
+
+        this.innerHTML = item.nbCandidatures;
+    }
 }]);

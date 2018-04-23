@@ -2,10 +2,11 @@
 
 <div map-lazy-load="https://maps.google.com/maps/api/js"
      map-lazy-load-params="{{googleMapsUrl}}"
+     ng-controller="AnalyzeCtrl as analyse"
      class="zone-map" id="map">
     <ng-map center="45.8586196,1.1618582" zoom="11">
         <custom-marker ng-repeat="item in mapPoints track by $index"
-                       position="{{item.point.lat}}, {{item.point.lng}}">
+                       position="{{item.point.lat}}, {{item.point.lng}}" on-click="analyse.ctrlConsole(event,item)">
             <div class="details-map">
                 {{ analyze.getPercentageFromTotalCandidatures(item.nbCandidatures) }}%
             </div>
