@@ -1,6 +1,6 @@
 'use strict';
 
-PBA.service('dataService',['filterService', function(filterService){
+PBA.service('dataService',['filterService', 'mapService', function(filterService, mapService){
     var self = this;
     var seriesId = 0;
     self.plots = [];
@@ -152,5 +152,6 @@ PBA.service('dataService',['filterService', function(filterService){
         filterService.calcBacList(self.plots);
         self.calcGraphData();
         self.updateMapPlots();
+        mapService.update(this.mapCans);
     };
 }]);

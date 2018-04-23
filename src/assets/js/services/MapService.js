@@ -27,7 +27,7 @@ PBA.service('mapService', function(){
                     success: function(result){
                         if(result.status !== 'OVER_QUERY_LIMIT' && result.results[0] !== undefined) {
                             self.coordinates[address] = result.results[0].geometry.location;
-                            self.addPoint(result.results[0].geometry.location, data);
+                            setTimeout(self.addPoint(result.results[0].geometry.location, data),50);
 
                         } else {
 
