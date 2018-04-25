@@ -177,7 +177,8 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         // val : different columns name
         var indexesTodo = {
             bac: ['Série', 'Série diplôme (Code)'],
-            homme_femme: ['Sexe']
+            homme_femme: ['Sexe'],
+            boursiers: ['Boursier'],
         };
 
         // for each candidature
