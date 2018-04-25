@@ -173,26 +173,41 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
     };
 
     self.generateIndexes = function(plot) {
+        // key : index name // see self.indexes
+        // val : different columns name
         var indexesTodo = {
-            bac: 'Série',
-            homme_femme: 'Sexe'
+            bac: ['Série', 'Série diplôme (Code)'],
+            homme_femme: ['Sexe']
         };
 
+        // for each candidature
         for (var iCandit in plot.data) {
             var candit = plot.data[iCandit];
 
+            // for each index
             for (var indexName in indexesTodo) {
-                var fieldIndex = indexesTodo[indexName];
-                if (typeof self.indexes[indexName].data[candit[fieldIndex]] === 'undefined') {
-                    self.indexes[indexName].data[candit[fieldIndex]] = {
-                        count: 1,
-                        data: [candit]
+                var fieldsIndex = indexesTodo[indexName];
+
+                // for each possible fields in the candidature
+                for (var iFieldIndex in fieldsIndex) {
+                    var fieldIndex = fieldsIndex[iFieldIndex];
+                    // if this field cannot be found -> skip it
+                    if (typeof candit[fieldIndex] === 'undefined' || candit[fieldIndex] === '') {
+                        continue;
                     }
-                } else {
-                    self.indexes[indexName].data[candit[fieldIndex]].count++;
-                    self.indexes[indexName].data[candit[fieldIndex]].data.push(candit);
+
+                    // update index
+                    if (typeof self.indexes[indexName].data[candit[fieldIndex]] === 'undefined') {
+                        self.indexes[indexName].data[candit[fieldIndex]] = {
+                            count: 1,
+                            data: [candit]
+                        }
+                    } else {
+                        self.indexes[indexName].data[candit[fieldIndex]].count++;
+                        self.indexes[indexName].data[candit[fieldIndex]].data.push(candit);
+                    }
+                    self.indexes[indexName].count++;
                 }
-                self.indexes[indexName].count++;
             }
         }
 

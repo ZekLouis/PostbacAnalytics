@@ -19,6 +19,7 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', 'filterService', function 
         reader.onload = function(e) {
             Papa.parse(reader.result, {
                 header: true,
+                skipEmptyLines: true,
                 complete: function(results) {
                     self.loading = false;
                     if (results.data.length > 0) {
