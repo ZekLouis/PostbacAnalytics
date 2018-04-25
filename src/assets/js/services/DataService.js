@@ -98,7 +98,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         self.mapCans = {lycees:mapCans, 'nbTotalCandidatures':nbTotalCandidatures };
     };
 
-    self.calcGraphData = function() {
+    /* self.calcGraphData = function() {
         var stats = {};
         // generate categories
         var graphData = {categories: [], data:[]};
@@ -163,6 +163,41 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
 
         self.pieData.xAxis.categories = graphData.categories;
         self.pieData.series = graphData.data;
+    }; */
+
+    self.calcGraphData = function() {
+        var indexName = 'bac';
+        var stats = {};
+        // generate categories
+        var graphData = {categories: [], data:[]};
+        for (var ilot in self.indexes[indexName].data) {
+            var lot = self.indexes[indexName].data[ilot];
+            for (var bac in lot) {
+                if (graphData.categories.indexOf(bac) === -1) {
+                    graphData.categories.push(bac);
+                }
+            }
+        }
+
+        var data = [];
+        for (var ilot in self.indexes[indexName].data) {
+            var lot = self.indexes[indexName].data[ilot];
+
+            for (var ibac in lot) {
+                var bac = lot[ibac];
+                console.log(bac, ibac);
+                data.push(bac.count)
+            }
+            graphData.data.push({
+                type: 'column',
+                name: 'lot',
+                data: data
+            })
+        }
+
+        console.log(graphData.categories)
+        self.pieData.xAxis.categories = graphData.categories;
+        self.pieData.series = graphData.data;
     };
 
     self.update = function() {
@@ -198,14 +233,18 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                     }
 
                     // update index
-                    if (typeof self.indexes[indexName].data[candit[fieldIndex]] === 'undefined') {
-                        self.indexes[indexName].data[candit[fieldIndex]] = {
+                    candit.plot = plot.name;
+                    if (typeof self.indexes[indexName].data[plot.name] === 'undefined') {
+                        self.indexes[indexName].data[plot.name] = {}
+                    }
+                    if (typeof self.indexes[indexName].data[plot.name][candit[fieldIndex]] === 'undefined') {
+                        self.indexes[indexName].data[plot.name][candit[fieldIndex]] = {
                             count: 1,
                             data: [candit]
                         }
                     } else {
-                        self.indexes[indexName].data[candit[fieldIndex]].count++;
-                        self.indexes[indexName].data[candit[fieldIndex]].data.push(candit);
+                        self.indexes[indexName].data[plot.name][candit[fieldIndex]].count++;
+                        self.indexes[indexName].data[plot.name][candit[fieldIndex]].data.push(candit);
                     }
                     self.indexes[indexName].count++;
                 }
