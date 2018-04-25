@@ -20,10 +20,27 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         series: []
     };
 
+    self.indexes = {
+        'bac' : {
+            'count' : 0,
+            'data' : {}
+        },
+        'homme_femme' : {
+            'count' : 0,
+            'data' : {}
+        },
+        'boursiers' : {
+            'count' : 0,
+            'data' : {}
+        }
+    };
+
     self.mapCans = [];
 
     self.addNewPlot = function(new_plot) {
         self.plots.push(new_plot);
+        // index data
+        self.generateIndexes(new_plot);
         self.update();
     };
 
@@ -153,5 +170,32 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         self.calcGraphData();
         self.updateMapPlots();
         mapService.update(this.mapCans);
+    };
+
+    self.generateIndexes = function(plot) {
+        var indexesTodo = {
+            bac: 'Série',
+            homme_femme: 'Sexe'
+        };
+
+        for (var iCandit in plot.data) {
+            var candit = plot.data[iCandit];
+
+            for (var indexName in indexesTodo) {
+                var fieldIndex = indexesTodo[indexName];
+                if (typeof self.indexes[indexName].data[candit[fieldIndex]] === 'undefined') {
+                    self.indexes[indexName].data[candit[fieldIndex]] = {
+                        count: 1,
+                        data: [candit]
+                    }
+                } else {
+                    self.indexes[indexName].data[candit[fieldIndex]].count++;
+                    self.indexes[indexName].data[candit[fieldIndex]].data.push(candit);
+                }
+                self.indexes[indexName].count++;
+            }
+        }
+
+        console.log(self.indexes);
     };
 }]);
