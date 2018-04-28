@@ -17,6 +17,11 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         credits: {
             enabled: false
         },
+        plotOptions: {
+            column: {
+                stacking: 'normal'
+            }
+        },
         series: []
     };
 
@@ -168,7 +173,20 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         self.pieData.series = graphData.data;
     }; */
 
+    /**
+     * This function only format data to fit highchart
+     */
     self.calcGraphData = function() {
+        var filter = 'all';
+        var counter = {
+            'homme_femme' : {
+                femme: 0,
+                homme: 0
+            },
+            'all' : {
+                total: 0
+            }
+        };
         var indexName = 'bac';
         var stats = {};
         // generate categories
@@ -197,24 +215,57 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                 if (!bac.selected) {
                     continue;
                 }
+
+                var count = counter[filter];
+                // reseting value
+                for (var d in counter[filter]) {
+                    counter[filter][d] = 0
+                }
                 var bac = lotData[ibac];
-                data[ibac] = bac.count
+                for (var candit in bac.data) {
+                    candit = bac.data[candit];
+                    switch (filter) {
+                        case 'homme_femme':
+                            if (candit['Sexe'] == 'M') {
+                                count.homme ++
+                            } else if (candit['Sexe'] == 'F') {
+                                count.femme ++
+                            }
+                            break;
+                        default:
+                            count.total ++
+                    }
+                }
+                // console.log(countF, countM);
+                // console.log(bac);
+                data[ibac] = {}
+                for (var c in count) {
+                    data[ibac][c] = count[c]
+                }
             }
 
             // object to array
-            var d = [];
+            var d = {};
+            console.log(data);
             for (var bac in data) {
                 var value = data[bac];
-                d.push(value);
+                for (var c in value) {
+                    if(typeof d[c] === 'undefined') {
+                        d[c] = []
+                    }
+                    d[c].push(value[c])
+                }
             }
-
-            graphData.data.push({
-                type: 'column',
-                name: ilot,
-                data: d
-            })
+            for (var data in d) {
+                graphData.data.push({
+                    stack: ilot,
+                    name: data + ' - ' + ilot,
+                    data: d[data]
+                });
+            }
         }
 
+        console.log(graphData)
         self.pieData.xAxis.categories = graphData.categories;
         self.pieData.series = graphData.data;
     };
@@ -269,5 +320,6 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                 }
             }
         }
+
     };
 }]);
