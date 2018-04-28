@@ -23,15 +23,18 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
     self.indexes = {
         'bac' : {
             'count' : 0,
-            'data' : {}
+            'data' : {},
+            'values' : [],
         },
         'homme_femme' : {
             'count' : 0,
-            'data' : {}
+            'data' : {},
+            'values' : [],
         },
         'boursiers' : {
             'count' : 0,
-            'data' : {}
+            'data' : {},
+            'values' : [],
         }
     };
 
@@ -40,8 +43,8 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
     self.addNewPlot = function(new_plot) {
         self.plots.push(new_plot);
         // index data
-        self.generateIndexes(new_plot);
         self.update();
+        self.generateIndexes(new_plot);
     };
 
     self.getPlotsList = function() {
@@ -170,32 +173,48 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         var stats = {};
         // generate categories
         var graphData = {categories: [], data:[]};
-        for (var ilot in self.indexes[indexName].data) {
-            var lot = self.indexes[indexName].data[ilot];
-            for (var bac in lot) {
-                if (graphData.categories.indexOf(bac) === -1) {
-                    graphData.categories.push(bac);
-                }
+        var initData = {};
+        for (var ibac in filterService.bac_list) {
+            var bac = filterService.bac_list[ibac];
+            if (bac.selected) {
+                initData[ibac] = 0;
+                graphData.categories.push(ibac);
             }
         }
 
-        var data = [];
-        for (var ilot in self.indexes[indexName].data) {
-            var lot = self.indexes[indexName].data[ilot];
+        for (var ilot in self.plots) {
+            var data = initData;
+            var lot = self.plots[ilot];
+            var ilot = lot.name;
 
-            for (var ibac in lot) {
-                var bac = lot[ibac];
-                console.log(bac, ibac);
-                data.push(bac.count)
+            // if this plot is not selected skip it
+            if (!lot.selected) {
+                continue;
             }
+            var lotData = self.indexes[indexName].data[ilot];
+            for (var ibac in lotData) {
+                var bac = filterService.bac_list[ibac];
+                if (!bac.selected) {
+                    continue;
+                }
+                var bac = lotData[ibac];
+                data[ibac] = bac.count
+            }
+
+            // object to array
+            var d = [];
+            for (var bac in data) {
+                var value = data[bac];
+                d.push(value);
+            }
+
             graphData.data.push({
                 type: 'column',
-                name: 'lot',
-                data: data
+                name: ilot,
+                data: d
             })
         }
 
-        console.log(graphData.categories)
         self.pieData.xAxis.categories = graphData.categories;
         self.pieData.series = graphData.data;
     };
@@ -250,7 +269,5 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                 }
             }
         }
-
-        console.log(self.indexes);
     };
 }]);
