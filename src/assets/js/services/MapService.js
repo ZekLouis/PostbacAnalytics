@@ -76,16 +76,14 @@ PBA.service('mapService', function(){
         }
         Object.keys(mapCans.lycees).forEach(function (key) {
 
-            if(self.api_status !== 'OVER_QUERY_LIMIT') {
-                self.addPointFromAddress(key, mapCans.lycees[key]);
-            }
+            self.addPointFromAddress(key, mapCans.lycees[key]);
+
         });
     };
 
     self.update = function (mapCans) {
         self.nbTotalCandidatures = mapCans.nbTotalCandidatures;
-        // REMI
-        // self.updatePointsFromCans(mapCans);
+        self.updatePointsFromCans(mapCans);
     };
 
 });
