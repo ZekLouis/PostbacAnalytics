@@ -4,6 +4,7 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
     var self = this;
     self.plots = dataService.plots;
     self.bacList = filterService.bac_list;
+    self.filter = 'all';
 
     self.googleMapsKey = mapService.googleMapsKey;
     $scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=" + self.googleMapsKey;
@@ -24,11 +25,11 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
     };
 
     self.debug = function() {
-        console.log(self.plots);
+        console.log(filterService.filter)
     };
 
     self.refresh = function() {
-
+        filterService.filter = self.filter;
         dataService.update();
         mapService.update(dataService.mapCans);
 

@@ -1,6 +1,6 @@
 <div class="container">
     <h1>Analyse</h1>
-    <!--<a ng-click="analyze.debug()" class="btn-primary btn">Debug</a>-->
+    <a ng-click="analyze.debug()" class="btn-primary btn">Debug</a>
 </div>
 
 <div class="row">
@@ -39,36 +39,30 @@
         </fieldset>
 
         <fieldset class="form-group row">
-            <legend class="col-form-legend">Tri par sexe</legend>
+            <legend class="col-form-legend">Options d'affichage</legend>
             <div class="col-sm-10">
                 <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="sexe" id="sexeH" value="option1" checked>
-                        Homme
+                    <input class="form-check-input" type="radio" name="filters-radio" ng-click="analyze.refresh()" ng-model="analyze.filter" id="total-radio" value="all" checked>
+                    <label class="form-check-label" for="total-radio">
+                        Total
                     </label>
                 </div>
                 <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="sexe" id="sexeF" value="option2">
-                        Femme
+                    <input class="form-check-input" type="radio" name="filters-radio" ng-click="analyze.refresh()" ng-model="analyze.filter" id="homme-femme-radio" value="homme_femme">
+                    <label class="form-check-label" for="homme-femme-radio">
+                        Homme / Femme
                     </label>
                 </div>
-                <div class="form-check disabled">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="sexe" id="sexeNB" value="option3">
-                        Non binaire
-                    </label>
-                </div>
-            </div>
-        </fieldset>
-
-        <fieldset class="form-group row">
-            <legend class="col-form-legend">Candidats boursiers</legend>
-            <div class="col-sm-10">
                 <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="boursier" id="boursier" value="oui">
-                        Boursiers uniquement
+                    <input class="form-check-input" type="radio" name="filters-radio" ng-click="analyze.refresh()" ng-model="analyze.filter" id="boursiers-radio" value="boursiers">
+                    <label class="form-check-label" for="boursiers-radio">
+                        Boursiers
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filters-radio" ng-click="analyze.refresh()" ng-model="analyze.filter" id="lycee-radio" value="lycee">
+                    <label class="form-check-label" for="lycee-radio">
+                        Lycée
                     </label>
                 </div>
             </div>

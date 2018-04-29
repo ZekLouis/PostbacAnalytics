@@ -3,21 +3,7 @@
 PBA.service('filterService', function(){
     var self = this;
     self.bac_list = {};
-
-    self.filters_list = {
-        '% Boursiers' : {
-            enabled: false,
-            ifunction: self.filterBoursiers
-        },
-        '% Hommes / Femmes' : {
-            enabled: false,
-            ifunction: self.filterBoursiers
-        }
-    };
-
-    self.filterBoursiers = function () {
-
-    };
+    self.filter = 'all';
 
     self.calcBacList = function(plots) {
         for(var plot in plots) {

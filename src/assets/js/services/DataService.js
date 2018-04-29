@@ -110,17 +110,15 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
      * This function only format data to fit highchart
      */
     self.calcGraphData = function() {
-        var filter = 'boursiers';
+        var filter = filterService.filter;
         var counter = {
             'homme_femme' : {
                 femme: 0,
                 homme: 0
             },
             'boursiers' : {
-                "Boursier de l'enseignement superieur" : 0,
-                "Boursier du secondaire" : 0,
-                "Non boursier": 0,
-                "Non renseigné" : 0
+            },
+            'lycee' : {
             },
             'all' : {
                 total: 0
@@ -131,6 +129,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         // generate categories
         var graphData = {categories: [], data:[]};
         var initData = {};
+        // add legend list
         for (var ibac in filterService.bac_list) {
             var bac = filterService.bac_list[ibac];
             if (bac.selected) {
@@ -174,20 +173,61 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
 
                         case 'boursiers':
                             if (candit['Boursier'] === undefined) {
+                                if (typeof count['Non renseigné'] === 'undefined') {
+                                    count['Non renseigné'] = 0
+                                }
                                 count['Non renseigné'] ++
                             } else {
+                                if (typeof count[candit['Boursier']] === 'undefined') {
+                                    count[candit['Boursier']] = 0
+                                }
                                 count[candit['Boursier']] ++
+                            }
+                            break;
+                        case 'lycee':
+                            if (candit['Libellé établissement'] === undefined) {
+                                if (typeof count['Non renseigné'] === 'undefined') {
+                                    count['Non renseigné'] = 0
+                                }
+                                count['Non renseigné'] ++
+                            } else {
+                                if (typeof count[candit['Libellé établissement']] === 'undefined') {
+                                    count[candit['Libellé établissement']] = 0
+                                }
+                                count[candit['Libellé établissement']] ++
                             }
                             break;
                         default:
                             count.total ++
                     }
                 }
-                // console.log(countF, countM);
-                // console.log(bac);
                 data[ibac] = {}
                 for (var c in count) {
                     data[ibac][c] = count[c]
+                }
+                // console.log(data)
+            }
+
+            if (filter == 'lycee') {
+                for (var bac in data) {
+                    // console.log(bac, data[bac], data)
+                    var value = data[bac];
+                    var total = 0
+                    for (var c in value) {
+                        total += value[c]
+                    }
+                    if (value == 0) {
+                        continue;
+                    }
+                    value['Autres'] = 0;
+                    // group by 10 percent
+                    var min_seuil = total / 10;
+                    for (var c in value) {
+                        if (value[c] < min_seuil) {
+                            value['Autres'] += value[c]
+                            delete(value[c])
+                        }
+                    }
                 }
             }
 
@@ -211,7 +251,6 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
             }
         }
 
-        console.log(graphData)
         self.pieData.xAxis.categories = graphData.categories;
         self.pieData.series = graphData.data;
     };
@@ -267,6 +306,5 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                 }
             }
         }
-        console.log(self.indexes)
     };
 }]);
