@@ -3,16 +3,51 @@
 PBA.service('mapService', function(){
 
     var self = this;
-    self.googleMapsKey = "AIzaSyD-zAE8umUUIT3FSoFiFYyChRuR5YsPge0";
+    self.googleMapsKey = "AIzaSyB5_m8BKa27lhlK0glps9CxGZbjpeD4eY0";
     self.api_status = '';
 
     self.nbTotalCandidatures = 0;
     self.mapPoints = [];
     self.coordinates = {};
 
-    self.addPoint = function (point, data) {
+    self.MAXCALLPERSEC = 10;
+    self.currentApiCall = 0;
+    self.ajaxDone = 0;
+    self.timeToWait = 0;
 
+    self.addPoint = function (point, data) {
         self.mapPoints.push({'point':point, 'nbCandidatures': data.length});
+    };
+
+    self.callApi = function (address, data) {
+        $.ajax({
+            url: "https://maps.googleapis.com/maps/api/geocode/json?address="+address+",+CA&key=" + self.googleMapsKey,
+            success: function(result){
+
+                self.ajaxDone ++;
+
+                if(result.status !== 'OVER_QUERY_LIMIT' && result.results[0] !== undefined) {
+                    self.coordinates[address] = result.results[0].geometry.location;
+                    self.addPoint(result.results[0].geometry.location, data);
+                } else {
+
+                    if (result.status === 'OVER_QUERY_LIMIT') {
+                        self.api_status = 'OVER_QUERY_LIMIT';
+                        console.error(result.error_message);
+                    }
+                }
+
+                if(self.ajaxDone === self.currentApiCall){
+
+                    console.log("chargement finis :)");
+
+                    self.currentApiCall = 0;
+                    self.ajaxDone = 0;
+                    self.timeToWait = 0;
+                }
+
+            }
+        });
     };
 
     self.addPointFromAddress = function(address, data) {
@@ -21,25 +56,15 @@ PBA.service('mapService', function(){
         if(self.coordinates[address] !== undefined) {
             self.addPoint(self.coordinates[address], data);
         } else {
-            if(self.api_status !== 'OVER_QUERY_LIMIT') {
-                $.ajax({
-                    url: "https://maps.googleapis.com/maps/api/geocode/json?address="+address+",+CA&key=" + self.googleMapsKey,
-                    success: function(result){
-                        if(result.status !== 'OVER_QUERY_LIMIT' && result.results[0] !== undefined) {
-                            self.coordinates[address] = result.results[0].geometry.location;
-                            setTimeout(self.addPoint(result.results[0].geometry.location, data),50);
+            if(self.currentApiCall < 20){
+                self.currentApiCall ++;
 
-                        } else {
-
-                            if (result.status === 'OVER_QUERY_LIMIT') {
-                                self.api_status = 'OVER_QUERY_LIMIT';
-                                console.error('Too much API request');
-                            }
-                        }
-                    }
-                });
-            } else {
-                console.error('yo wtf stop calling this api .. you\'re calling it too much :/')
+                if(self.currentApiCall % self.MAXCALLPERSEC === self.MAXCALLPERSEC-1){
+                    self.timeToWait += 1000;
+                }
+                setTimeout(function() {
+                    self.callApi(address, data);
+                },self.timeToWait);
             }
         }
     };
