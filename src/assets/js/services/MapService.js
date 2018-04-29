@@ -59,7 +59,8 @@ PBA.service('mapService', function(){
 
     self.update = function (mapCans) {
         self.nbTotalCandidatures = mapCans.nbTotalCandidatures;
-        self.updatePointsFromCans(mapCans);
+        // REMI
+        // self.updatePointsFromCans(mapCans);
     };
 
 });

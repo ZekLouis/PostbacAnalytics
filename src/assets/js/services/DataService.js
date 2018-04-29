@@ -106,82 +106,21 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         self.mapCans = {lycees:mapCans, 'nbTotalCandidatures':nbTotalCandidatures };
     };
 
-    /* self.calcGraphData = function() {
-        var stats = {};
-        // generate categories
-        var graphData = {categories: [], data:[]};
-        for (var plot in self.plots) {
-            plot = self.plots[plot];
-
-            // if plot not selected go to next plot
-            if(!plot.selected) {
-                continue;
-            }
-            graphData.categories.push(plot.name);
-            for (var can in plot.data) {
-                can = plot.data[can];
-                var bac = can['Série'];
-
-                // if this bac is not selected go to the next bac
-                if(bac === '' || !filterService.bac_list[bac].selected) {
-                    continue;
-                }
-
-                if(stats[can['Série']] == undefined) {
-                    stats[can['Série']] = {};
-                }
-
-                if(stats[can['Série']][plot.name] == undefined) {
-                    stats[can['Série']][plot.name] = 1;
-                } else {
-                    stats[can['Série']][plot.name] ++;
-                }
-            }
-        }
-
-        graphData.data = [];
-        for (var bacName in stats) {
-            var bac = stats[bacName];
-            var newBac = {
-                type: 'column',
-                name: bacName,
-                data: [],
-                id: seriesId
-            };
-
-            seriesId++;
-
-            for (var count in bac) {
-                newBac.data.push(bac[count]);
-            }
-            if(bacName != "") {
-                graphData.data.push(newBac)
-            }
-        }
-
-        // add 0 for BAC that are not present in this plot
-        for (var d in graphData.data) {
-            d = graphData.data[d];
-            var length = graphData.categories.length;
-            if (d.data.length < length) {
-                d.data.push(0);
-            }
-
-        }
-
-        self.pieData.xAxis.categories = graphData.categories;
-        self.pieData.series = graphData.data;
-    }; */
-
     /**
      * This function only format data to fit highchart
      */
     self.calcGraphData = function() {
-        var filter = 'all';
+        var filter = 'boursiers';
         var counter = {
             'homme_femme' : {
                 femme: 0,
                 homme: 0
+            },
+            'boursiers' : {
+                "Boursier de l'enseignement superieur" : 0,
+                "Boursier du secondaire" : 0,
+                "Non boursier": 0,
+                "Non renseigné" : 0
             },
             'all' : {
                 total: 0
@@ -232,6 +171,14 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                                 count.femme ++
                             }
                             break;
+
+                        case 'boursiers':
+                            if (candit['Boursier'] === undefined) {
+                                count['Non renseigné'] ++
+                            } else {
+                                count[candit['Boursier']] ++
+                            }
+                            break;
                         default:
                             count.total ++
                     }
@@ -246,7 +193,6 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
 
             // object to array
             var d = {};
-            console.log(data);
             for (var bac in data) {
                 var value = data[bac];
                 for (var c in value) {
@@ -273,7 +219,8 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
     self.update = function() {
         filterService.calcBacList(self.plots);
         self.calcGraphData();
-        self.updateMapPlots();
+        // REMI
+        // self.updateMapPlots();
         mapService.update(this.mapCans);
     };
 
@@ -320,6 +267,6 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                 }
             }
         }
-
+        console.log(self.indexes)
     };
 }]);

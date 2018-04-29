@@ -24,8 +24,12 @@ PBA.service('filterService', function(){
             plot = plots[plot];
             for(var candit in plot.data) {
                 candit = plot.data[candit];
-                if (self.bac_list[candit['Série']] === undefined && candit['Série'] !== '') {
+                if (typeof candit['Série'] !== 'undefined' && self.bac_list[candit['Série']] === undefined && candit['Série'] !== '') {
                     self.bac_list[candit['Série']] = {
+                        selected: true
+                    }
+                } else if (typeof candit['Série diplôme (Code)'] !== 'undefined' && self.bac_list[candit['Série diplôme (Code)']] === undefined && candit['Série diplôme (Code)'] !== '') {
+                    self.bac_list[candit['Série diplôme (Code)']] = {
                         selected: true
                     }
                 }
