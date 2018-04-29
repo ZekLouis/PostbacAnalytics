@@ -16,7 +16,7 @@ PBA.service('mapService', function(){
     self.timeToWait = 0;
 
     self.addPoint = function (point, data) {
-        self.mapPoints.push({'point':point, 'nbCandidatures': data.length});
+        self.mapPoints.push({'point':point, 'nbCandidatures': data.length, 'cans': data});
     };
 
     self.callApi = function (address, data) {
@@ -68,12 +68,53 @@ PBA.service('mapService', function(){
             }
         }
     };
+
+    self.getNbCansFromSerie = function(cans, serie){
+
+        var total = 0;
+
+        cans.forEach(function (can) {
+            if(serie === can['Série'] || serie === can['Série diplôme (Code)']){
+                total++;
+            }
+        });
+        return total;
+
+    };
+
+    self.getNbCansFromSexe = function(cans){
+
+        var totalM = 0;
+        var totalF = 0;
+
+        cans.forEach(function (can) {
+            if(can['Sexe'] === 'M'){
+                totalM++;
+            }
+            if(can['Sexe'] === 'F'){
+                totalF++;
+            }
+        });
+        return {'M' : totalM, 'F' : totalF};
+
+    };
+
+    self.getNbCansFromBourse = function(cans){
+
+        var total = 0;
+
+        cans.forEach(function (can) {
+            if(can['Boursier (Code)'] !== '0' && can['Boursier (Code)'] !== undefined){
+                total++;
+            }
+        });
+        return total;
+
+    };
     
     self.updatePointsFromCans = function (mapCans) {
 
-        while(self.mapPoints.length > 0) {
-            self.mapPoints.pop();
-        }
+        self.mapPoints = [];
         Object.keys(mapCans.lycees).forEach(function (key) {
 
             self.addPointFromAddress(key, mapCans.lycees[key]);

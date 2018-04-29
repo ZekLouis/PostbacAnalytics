@@ -36,8 +36,26 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
     };
 
     self.ctrlConsole = function (event, item) {
-        console.log(item);
 
-        this.innerHTML = item.nbCandidatures;
+        var texte = "<p>" + item.cans[0]["Libellé établissement"] + "</p>";
+        texte += "<p>" + item.nbCandidatures + " candidats ("+ self.getPercentageFromTotalCandidatures(item.nbCandidatures) +"%)</p>";
+
+        Object.keys(self.bacList).forEach(function (key) {
+
+            var nbCans = mapService.getNbCansFromSerie(item.cans, key);
+
+            if( nbCans !== 0){
+               texte += "<p>" + key + " : " + nbCans + " ("+ self.getPercentageFromTotalCandidatures(nbCans) +"%)</p>";
+            }
+        });
+
+        var cansPerSexe = mapService.getNbCansFromSexe(item.cans);
+
+        texte += "<p>H/F :" + cansPerSexe.M + "/" + cansPerSexe.F + " </p>";
+        texte += "<p>Boursiers :" + mapService.getNbCansFromBourse(item.cans) + " </p>";
+
+        this.innerHTML = texte;
+
+        this.classList.add("details-map-extended");
     }
 }]);
