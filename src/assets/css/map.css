@@ -5,7 +5,18 @@
     padding: 10px 5px 10px 5px;
     color:white;
     font-size: 12px;
+    cursor: pointer;
 }
+
+.details-map-extended.details-map {
+    border-radius: 0;
+    width: 150px;
+}
+
+.details-map-extended.details-map > p {
+    margin : 0;
+}
+
 .details-map:after, .arrow_box:before {
     top: 100%;
     left: 50%;
