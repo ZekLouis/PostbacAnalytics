@@ -89,6 +89,10 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                 can = plot.data[can];
                 var bac = can['Série'];
 
+                if(bac === undefined){
+                    bac = can['Série diplôme (Code)'];
+                }
+
                 // if this bac is not selected go to the next bac
                 if(bac === '' || !filterService.bac_list[bac].selected) {
                     continue;
@@ -258,8 +262,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
     self.update = function() {
         filterService.calcBacList(self.plots);
         self.calcGraphData();
-        // REMI
-        // self.updateMapPlots();
+        self.updateMapPlots();
         mapService.update(this.mapCans);
     };
 

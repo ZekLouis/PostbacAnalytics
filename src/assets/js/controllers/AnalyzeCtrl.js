@@ -1,6 +1,6 @@
 'use strict';
 
-PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapService', function ($scope, dataService, filterService, mapService) {
+PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapService', 'NgMap', function ($scope, dataService, filterService, mapService, NgMap) {
     var self = this;
     self.plots = dataService.plots;
     self.bacList = filterService.bac_list;
