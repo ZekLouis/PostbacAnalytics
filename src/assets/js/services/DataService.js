@@ -89,7 +89,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                 can = plot.data[can];
                 var bac = can['Série'];
                 var sexe = can['Sexe'];
-                var boursier = can['Boursier des lycées (code)'];
+                var boursier = can['Boursier des lycées'];
 
                 if(bac === undefined){
                     bac = can['Série diplôme (Code)'];
@@ -104,6 +104,13 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                     continue;
                 }
 
+                if(boursier === '' || boursier === undefined || (!filterService.boursier_list['Candidat Boursier'].selected && boursier === 'Oui')){
+                    continue;
+                }
+
+                if((!filterService.boursier_list['Candidat Non Boursier'].selected && boursier === 'Non')){
+                    continue;
+                }
 
                 if(mapCans[can['Libellé établissement']] === undefined){
                     mapCans[can['Libellé établissement']] = [];
