@@ -1,6 +1,6 @@
 'use strict';
 
-PBA.service('mapService', function(){
+PBA.service('mapService', ['$rootScope', function($rootScope){
 
     var self = this;
     self.googleMapsKey = "AIzaSyB5_m8BKa27lhlK0glps9CxGZbjpeD4eY0";
@@ -14,6 +14,7 @@ PBA.service('mapService', function(){
     self.currentApiCall = 0;
     self.ajaxDone = 0;
     self.timeToWait = 0;
+    self.isMapUpdating = false;
 
     self.addPoint = function (point, data) {
         self.mapPoints.push({'point':point, 'nbCandidatures': data.length, 'cans': data});
@@ -44,6 +45,8 @@ PBA.service('mapService', function(){
                     self.currentApiCall = 0;
                     self.ajaxDone = 0;
                     self.timeToWait = 0;
+                    self.isMapUpdating = false;
+                    $rootScope.$apply();
                 }
 
             }
@@ -123,6 +126,8 @@ PBA.service('mapService', function(){
             self.addPointFromAddress(key, mapCans.lycees[key]);
 
         });
+        self.isMapUpdating = true;
+
     };
 
     self.update = function (mapCans) {
@@ -130,4 +135,4 @@ PBA.service('mapService', function(){
         self.updatePointsFromCans(mapCans);
     };
 
-});
+}]);
