@@ -114,7 +114,10 @@ PBA.service('mapService', function(){
     
     self.updatePointsFromCans = function (mapCans) {
 
-        self.mapPoints = [];
+        while(self.mapPoints.length > 0) {
+            self.mapPoints.pop();
+        }
+
         Object.keys(mapCans.lycees).forEach(function (key) {
 
             self.addPointFromAddress(key, mapCans.lycees[key]);
