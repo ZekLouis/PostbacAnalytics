@@ -104,7 +104,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                     continue;
                 }
 
-                if(boursier === '' || boursier === undefined || (!filterService.boursier_list['Candidat Boursier'].selected && boursier === 'Oui')){
+                if(boursier === '' || (!filterService.boursier_list['Candidat Boursier'].selected && boursier === 'Oui')){
                     continue;
                 }
 

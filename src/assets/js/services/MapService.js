@@ -123,7 +123,15 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
 
         Object.keys(mapCans.lycees).forEach(function (key) {
 
-            self.addPointFromAddress(key, mapCans.lycees[key]);
+            var commune = mapCans.lycees[key][0]['Commune établissement'];
+            var pays = mapCans.lycees[key][0]['Pays établissement'];
+
+            //si pas de lycee
+            if(key ===''){
+                return;
+            }
+
+            self.addPointFromAddress(key + ' ' + commune + ' ' + pays, mapCans.lycees[key]);
 
         });
         self.isMapUpdating = true;
