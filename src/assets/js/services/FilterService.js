@@ -3,6 +3,8 @@
 PBA.service('filterService', function(){
     var self = this;
     self.bac_list = {};
+    self.sexe_list = {'M' : {selected : true}, 'F': {selected : true}};
+    self.boursier_list = {'Candidat Boursier' : {selected : true}, 'Candidat Non Boursier': {selected : true}};
     self.filter = 'all';
 
     self.calcBacList = function(plots) {

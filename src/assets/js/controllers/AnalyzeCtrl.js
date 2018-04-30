@@ -4,6 +4,8 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
     var self = this;
     self.plots = dataService.plots;
     self.bacList = filterService.bac_list;
+    self.sexeList = filterService.sexe_list;
+    self.boursierList = filterService.boursier_list;
     self.filter = 'all';
 
     self.googleMapsKey = mapService.googleMapsKey;
