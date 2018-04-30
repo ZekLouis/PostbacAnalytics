@@ -29,17 +29,17 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         'bac' : {
             'count' : 0,
             'data' : {},
-            'values' : [],
+            'values' : []
         },
         'homme_femme' : {
             'count' : 0,
             'data' : {},
-            'values' : [],
+            'values' : []
         },
         'boursiers' : {
             'count' : 0,
             'data' : {},
-            'values' : [],
+            'values' : []
         }
     };
 
@@ -88,6 +88,8 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
             for (var can in plot.data) {
                 can = plot.data[can];
                 var bac = can['Série'];
+                var sexe = can['Sexe'];
+                var boursier = can['Boursier des lycées (code)'];
 
                 if(bac === undefined){
                     bac = can['Série diplôme (Code)'];
@@ -97,6 +99,11 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                 if(bac === '' || !filterService.bac_list[bac].selected) {
                     continue;
                 }
+
+                if(sexe === '' || !filterService.sexe_list[sexe].selected){
+                    continue;
+                }
+
 
                 if(mapCans[can['Libellé établissement']] === undefined){
                     mapCans[can['Libellé établissement']] = [];
