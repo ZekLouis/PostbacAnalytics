@@ -25,13 +25,22 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
     };
 
     self.debug = function() {
-        console.log(filterService.filter)
+        console.log(self.isMapUpdating())
     };
 
     self.refresh = function() {
         filterService.filter = self.filter;
         dataService.update();
         mapService.update(dataService.mapCans);
+
+    };
+
+    self.isMapUpdating = function() {
+
+        if(mapService.ajaxDone !== mapService.currentApiCall){
+            return "Informations en cours de mise à jour sur la carte ("+ mapService.MAXCALLPERSEC +" localisations sont chargées par seconde) ...";
+        }
+        return "Informations de la carte à jour !";
 
     };
 
