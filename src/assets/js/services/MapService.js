@@ -8,7 +8,12 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
 
     self.nbTotalCandidatures = 0;
     self.mapPoints = [];
+
     self.coordinates = {};
+
+    if(localStorage.getItem('coordinates')){
+        self.coordinates = JSON.parse(localStorage.getItem('coordinates'));
+    }
 
     self.MAXCALLPERSEC = 10;
     self.currentApiCall = 0;
@@ -47,6 +52,7 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
                     self.timeToWait = 0;
                     self.isMapUpdating = false;
                     $rootScope.$apply();
+                    localStorage.setItem('coordinates', JSON.stringify(self.coordinates));
                 }
 
             }
@@ -59,16 +65,14 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
         if(self.coordinates[address] !== undefined) {
             self.addPoint(self.coordinates[address], data);
         } else {
-            if(self.currentApiCall < 20){
-                self.currentApiCall ++;
+            self.currentApiCall ++;
 
-                if(self.currentApiCall % self.MAXCALLPERSEC === self.MAXCALLPERSEC-1){
-                    self.timeToWait += 1000;
-                }
-                setTimeout(function() {
-                    self.callApi(address, data);
-                },self.timeToWait);
+            if(self.currentApiCall % self.MAXCALLPERSEC === self.MAXCALLPERSEC-1){
+                self.timeToWait += 1000;
             }
+            setTimeout(function() {
+                self.callApi(address, data);
+            },self.timeToWait);
         }
     };
 
