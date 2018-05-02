@@ -1,6 +1,6 @@
 'use strict';
 
-PBA.service('mapService', ['$rootScope', function($rootScope){
+PBA.service('mapService', ['$rootScope', 'NgMap', function($rootScope, NgMap){
 
     var self = this;
     self.googleMapsKey = "AIzaSyB5_m8BKa27lhlK0glps9CxGZbjpeD4eY0";
@@ -56,6 +56,23 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
                 }
 
             }
+        });
+    };
+
+    //tentative de clusterer non concluante
+    self.updateClusterer = function (){
+        self.dynMarkers = [];
+        NgMap.getMap().then(function(map) {
+            var bounds = new google.maps.LatLngBounds();
+            for (var k in map.customMarkers) {
+                var cm = map.customMarkers[k];
+                self.dynMarkers.push(cm);
+                bounds.extend(cm.getPosition());
+            }
+
+            self.markerClusterer = new MarkerClusterer(map, self.dynMarkers, {imagePath: 'assets/images/cluster/m'});
+            map.setCenter(bounds.getCenter());
+            map.fitBounds(bounds);
         });
     };
 
