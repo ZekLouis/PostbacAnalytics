@@ -4,6 +4,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
     var self = this;
     var seriesId = 0;
     self.plots = [];
+    self.plots_name_indexes = [];
     self.pieData = {
         chart: {
             type: 'column'
@@ -47,6 +48,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
 
     self.addNewPlot = function(new_plot) {
         self.plots.push(new_plot);
+        self.plots_name_indexes.push(new_plot.name);
         // index data
         self.update();
         self.generateIndexes(new_plot);
@@ -128,7 +130,6 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
      * This function only format data to fit highchart
      */
     self.calcGraphData = function() {
-        console.log(self.plots)
         var filter = filterService.filter;
         var counter = {
             'homme_femme' : {
@@ -161,7 +162,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         for (var ilot in self.plots) {
             var data = initData;
             var lot = self.plots[ilot];
-            var ilot = lot.name;
+            var ilot = self.getIndex(self.plots_name_indexes, lot.name);
 
             // if this plot is not selected skip it
             if (!lot.selected) {
@@ -272,8 +273,8 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
             }
             for (var data in d) {
                 graphData.data.push({
-                    stack: ilot,
-                    name: data + ' - ' + ilot,
+                    stack: lot.name,
+                    name: data + ' - ' + lot.name,
                     data: d[data]
                 });
             }
@@ -317,21 +318,31 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
 
                     // update index
                     candit.plot = plot.name;
-                    if (typeof self.indexes[indexName].data[plot.name] === 'undefined') {
-                        self.indexes[indexName].data[plot.name] = {}
+                    var index = self.getIndex(self.plots_name_indexes, plot.name);
+                    if (typeof self.indexes[indexName].data[index] === 'undefined') {
+                        self.indexes[indexName].data[index] = {}
                     }
-                    if (typeof self.indexes[indexName].data[plot.name][candit[fieldIndex]] === 'undefined') {
-                        self.indexes[indexName].data[plot.name][candit[fieldIndex]] = {
+                    if (typeof self.indexes[indexName].data[index][candit[fieldIndex]] === 'undefined') {
+                        self.indexes[indexName].data[index][candit[fieldIndex]] = {
                             count: 1,
                             data: [candit]
                         }
                     } else {
-                        self.indexes[indexName].data[plot.name][candit[fieldIndex]].count++;
-                        self.indexes[indexName].data[plot.name][candit[fieldIndex]].data.push(candit);
+                        self.indexes[indexName].data[index][candit[fieldIndex]].count++;
+                        self.indexes[indexName].data[index][candit[fieldIndex]].data.push(candit);
                     }
                     self.indexes[indexName].count++;
                 }
             }
         }
     };
+
+    self.getIndex = function(array, element) {
+        for (var index in self.plots) {
+            if (self.plots[index].name === element) {
+                return index;
+            }
+        }
+        return -1;
+    }
 }]);
