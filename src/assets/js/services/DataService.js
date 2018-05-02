@@ -128,7 +128,6 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
      * This function only format data to fit highchart
      */
     self.calcGraphData = function() {
-        console.log(self.plots)
         var filter = filterService.filter;
         var counter = {
             'homme_femme' : {
