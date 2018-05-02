@@ -141,7 +141,8 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
             },
             'all' : {
                 total: 0
-            }
+            },
+            'departement': {}
         };
         var indexName = 'bac';
         var stats = {};
@@ -216,6 +217,14 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                                 count[candit['Libellé établissement']] ++
                             }
                             break;
+
+                        case 'departement':
+                            if (typeof count[candit['Département établissement']] === 'undefined') {
+                                count[candit['Département établissement']] = 0;
+                            }
+                            count[candit['Département établissement']] ++;
+                            break;
+
                         default:
                             count.total ++
                     }
