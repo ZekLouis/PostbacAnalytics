@@ -1,12 +1,16 @@
 <div class="container">
+    <hr>
     <h1>Analyse</h1>
+    <hr>
     <!--<a ng-click="analyze.debug()" class="btn-primary btn">Débug</a>-->
     <p class="chargement">{{ analyze.isMapUpdating() }}</p>
+    <hr>
 </div>
 
 <div class="row">
     <div class="col">
         <h3>Sélection des lots</h3>
+        <hr>
         <div ng-repeat="(key, value) in analyze.plots" class="form-check">
             <input class="form-check-input" ng-click="analyze.refresh()" ng-model="value.selected" type="checkbox" value="{{key}}" id="lot-{{key}}">
             <label class="form-check-label" for="lot-{{key}}">
@@ -74,8 +78,9 @@
         </fieldset>
     </div>
 
-    <div class="col-6">
-        <ul class="nav nav-tabs">
+    <div class="col-6 card">
+        <hr>
+        <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
                 <a class="nav-link" ng-click="analyze.setModeGraphique()" ui-sref="analyze.graphs">Mode graphique</a>
             </li>
@@ -83,10 +88,12 @@
                 <a class="nav-link" ng-click="analyze.setModeCarte()" ui-sref="analyze.map">Mode carte</a>
             </li>
         </ul>
+        <hr>
         <div ui-view></div>
     </div>
     <div class="col">
         <h3>Filtres</h3>
+        <hr>
         <fieldset>
             <legend class="col-form-legend">Série de bac</legend>
             <div class="col-sm-10">
