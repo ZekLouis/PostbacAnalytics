@@ -128,6 +128,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
      * This function only format data to fit highchart
      */
     self.calcGraphData = function() {
+        console.log(self.plots)
         var filter = filterService.filter;
         var counter = {
             'homme_femme' : {
@@ -237,12 +238,12 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                     if (value == 0) {
                         continue;
                     }
-                    value['Autres'] = 0;
+                    value['Autres lycées'] = 0;
                     // group by 10 percent
-                    var min_seuil = total / 10;
+                    var min_seuil = total / 5;
                     for (var c in value) {
                         if (value[c] < min_seuil) {
-                            value['Autres'] += value[c]
+                            value['Autres lycées'] += value[c]
                             delete(value[c])
                         }
                     }
