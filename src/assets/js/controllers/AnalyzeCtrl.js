@@ -46,9 +46,16 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
 
     };
 
-    self.ctrlConsole = function (event, item) {
+    self.markerOnClick = function (event, item) {
 
-        var texte = "<p>" + item.cans[0]["Libellé établissement"] + "</p>";
+        if (this.classList.contains('details-map-extended')) {
+
+            this.innerHTML = "<div class=\"details-map ng-binding ng-scope\">" + self.getPercentageFromTotalCandidatures(item.nbCandidatures) +"%</div>";
+            this.classList.remove("details-map-extended");
+            return;
+        }
+
+        var texte = "<div class=\"details-map ng-binding ng-scope\"><p>" + item.cans[0]["Libellé établissement"] + "</p>";
         texte += "<p>" + item.nbCandidatures + " candidats ("+ self.getPercentageFromTotalCandidatures(item.nbCandidatures) +"%)</p>";
 
         Object.keys(self.bacList).forEach(function (key) {
@@ -63,10 +70,9 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
         var cansPerSexe = mapService.getNbCansFromSexe(item.cans);
 
         texte += "<p>H/F :" + cansPerSexe.M + "/" + cansPerSexe.F + " </p>";
-        texte += "<p>Boursiers :" + mapService.getNbCansFromBourse(item.cans) + " </p>";
+        texte += "<p>Boursiers :" + mapService.getNbCansFromBourse(item.cans) + " </p></div>";
 
         this.innerHTML = texte;
-
         this.classList.add("details-map-extended");
     }
 }]);
