@@ -15,6 +15,9 @@ PBA.service('mapService', ['$rootScope', 'NgMap', function($rootScope, NgMap){
         self.coordinates = JSON.parse(localStorage.getItem('coordinates'));
     }
 
+    self.markerClusterer = null;
+
+
     self.MAXCALLPERSEC = 10;
     self.currentApiCall = 0;
     self.ajaxDone = 0;
@@ -52,6 +55,8 @@ PBA.service('mapService', ['$rootScope', 'NgMap', function($rootScope, NgMap){
                     self.timeToWait = 0;
                     self.isMapUpdating = false;
                     $rootScope.$apply();
+
+                    self.updateClusterer();
                     localStorage.setItem('coordinates', JSON.stringify(self.coordinates));
                 }
 
@@ -70,7 +75,14 @@ PBA.service('mapService', ['$rootScope', 'NgMap', function($rootScope, NgMap){
                 bounds.extend(cm.getPosition());
             }
 
-            self.markerClusterer = new MarkerClusterer(map, self.dynMarkers, {imagePath: 'assets/images/cluster/m'});
+            if(self.markerClusterer === null ){
+                self.markerClusterer = new MarkerClusterer(map, self.dynMarkers, {imagePath: 'assets/images/cluster/m'});
+            }else {
+                self.markerClusterer.clearMarkers();
+                self.markerClusterer.setMap(null);
+                self.markerClusterer.setMap(map);
+                self.markerClusterer.addMarkers(self.dynMarkers);
+            }
             map.setCenter(bounds.getCenter());
             map.fitBounds(bounds);
         });
@@ -156,6 +168,7 @@ PBA.service('mapService', ['$rootScope', 'NgMap', function($rootScope, NgMap){
 
         });
         self.isMapUpdating = true;
+        self.updateClusterer();
 
     };
 
