@@ -7,6 +7,7 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
     self.sexeList = filterService.sexe_list;
     self.boursierList = filterService.boursier_list;
     self.filter = 'all';
+    self.mode = '';
 
     self.googleMapsKey = mapService.googleMapsKey;
     $scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=" + self.googleMapsKey;
@@ -74,5 +75,13 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
 
         this.innerHTML = texte;
         this.classList.add("details-map-extended");
-    }
+    };
+
+    self.setModeGraphique = function() {
+        self.mode = 'graphique';
+    };
+
+    self.setModeCarte = function() {
+        self.mode = 'carte';
+    };
 }]);
