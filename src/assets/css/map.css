@@ -13,7 +13,7 @@
     width: 150px;
 }
 
-.details-map-extended.details-map > p {
+.details-map-extended > .details-map > p {
     margin : 0;
 }
 
