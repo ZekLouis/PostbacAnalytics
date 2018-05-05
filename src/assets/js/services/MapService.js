@@ -55,8 +55,6 @@ PBA.service('mapService', ['$rootScope', 'NgMap', function($rootScope, NgMap){
                     self.timeToWait = 0;
                     self.isMapUpdating = false;
                     $rootScope.$apply();
-
-                    self.updateClusterer();
                     localStorage.setItem('coordinates', JSON.stringify(self.coordinates));
                 }
 
@@ -64,27 +62,20 @@ PBA.service('mapService', ['$rootScope', 'NgMap', function($rootScope, NgMap){
         });
     };
 
-    //tentative de clusterer non concluante
+    //update du clusterer
     self.updateClusterer = function (){
-        self.dynMarkers = [];
+
         NgMap.getMap().then(function(map) {
+            self.dynMarkers = [];
             var bounds = new google.maps.LatLngBounds();
             for (var k in map.customMarkers) {
                 var cm = map.customMarkers[k];
                 self.dynMarkers.push(cm);
-                bounds.extend(cm.getPosition());
             }
-
-            if(self.markerClusterer === null ){
-                self.markerClusterer = new MarkerClusterer(map, self.dynMarkers, {imagePath: 'assets/images/cluster/m'});
-            }else {
-                self.markerClusterer.clearMarkers();
-                self.markerClusterer.setMap(null);
-                self.markerClusterer.setMap(map);
-                self.markerClusterer.addMarkers(self.dynMarkers);
-            }
-            map.setCenter(bounds.getCenter());
-            map.fitBounds(bounds);
+            self.markerClusterer = new MarkerClusterer(map, self.dynMarkers, {
+                maxZoom: 15,
+                imagePath: 'assets/images/cluster/m'
+            });
         });
     };
 
@@ -168,13 +159,13 @@ PBA.service('mapService', ['$rootScope', 'NgMap', function($rootScope, NgMap){
 
         });
         self.isMapUpdating = true;
-        self.updateClusterer();
 
     };
 
     self.update = function (mapCans) {
         self.nbTotalCandidatures = mapCans.nbTotalCandidatures;
         self.updatePointsFromCans(mapCans);
+        self.updateClusterer();
     };
 
 }]);
