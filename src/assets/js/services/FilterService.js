@@ -2,11 +2,15 @@
 
 PBA.service('filterService', function(){
     var self = this;
+    //bac lists
     self.bac_list = {};
+    //sex list
     self.sexe_list = {'M' : {selected : true}, 'F': {selected : true}};
+    //boursier list
     self.boursier_list = {'Candidat Boursier' : {selected : true}, 'Candidat Non Boursier': {selected : true}};
     self.filter = 'all';
 
+    //To get current bac list
     self.calcBacList = function(plots) {
         for(var plot in plots) {
             plot = plots[plot];

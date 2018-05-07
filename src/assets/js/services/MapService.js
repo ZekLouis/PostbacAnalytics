@@ -3,28 +3,34 @@
 PBA.service('mapService', ['$rootScope', function($rootScope){
 
     var self = this;
+    //Info API
     self.googleMapsKey = "AIzaSyB5_m8BKa27lhlK0glps9CxGZbjpeD4eY0";
     self.api_status = '';
 
+    //Markers info
     self.nbTotalCandidatures = 0;
     self.mapPoints = [];
-
+    //Once a destination is geocoded with API, you can get it here
     self.coordinates = {};
 
+    //Get markers from local storage
     if(localStorage.getItem('coordinates')){
         self.coordinates = JSON.parse(localStorage.getItem('coordinates'));
     }
 
+    //Info to get markers from API
     self.MAXCALLPERSEC = 10;
     self.currentApiCall = 0;
     self.ajaxDone = 0;
     self.timeToWait = 0;
     self.isMapUpdating = false;
 
+    //addPoint to print
     self.addPoint = function (point, data) {
         self.mapPoints.push({'point':point, 'nbCandidatures': data.length, 'cans': data});
     };
 
+    //Ajax call to geocode a destination
     self.callApi = function (address, data) {
         $.ajax({
             url: "https://maps.googleapis.com/maps/api/geocode/json?address="+address+",+CA&key=" + self.googleMapsKey,
@@ -59,6 +65,7 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
         });
     };
 
+    //Get marker position, if we don't already have it, get it from Google API
     self.addPointFromAddress = function(address, data) {
 
         // check if we already have this information to avoid calling google' api
@@ -76,6 +83,7 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
         }
     };
 
+    //Get total candidates from a bac Serie
     self.getNbCansFromSerie = function(cans, serie){
 
         var total = 0;
@@ -89,6 +97,7 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
 
     };
 
+    //Get total candidates from sex
     self.getNbCansFromSexe = function(cans){
 
         var totalM = 0;
@@ -106,6 +115,7 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
 
     };
 
+    //Get total boursiers
     self.getNbCansFromBourse = function(cans){
 
         var total = 0;
@@ -118,7 +128,8 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
         return total;
 
     };
-    
+
+    //update all markers on map
     self.updatePointsFromCans = function (mapCans) {
 
         while(self.mapPoints.length > 0) {
@@ -142,6 +153,7 @@ PBA.service('mapService', ['$rootScope', function($rootScope){
 
     };
 
+    //update informations
     self.update = function (mapCans) {
         self.nbTotalCandidatures = mapCans.nbTotalCandidatures;
         self.updatePointsFromCans(mapCans);

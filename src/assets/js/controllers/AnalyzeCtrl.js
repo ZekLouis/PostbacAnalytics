@@ -2,6 +2,7 @@
 
 PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapService', 'NgMap', function ($scope, dataService, filterService, mapService, NgMap) {
     var self = this;
+    //filter lists
     self.plots = dataService.plots;
     self.bacList = filterService.bac_list;
     self.sexeList = filterService.sexe_list;
@@ -9,10 +10,14 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
     self.filter = 'all';
     self.mode = '';
 
+    //Google map config
     self.googleMapsKey = mapService.googleMapsKey;
     $scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=" + self.googleMapsKey;
+
+    //Markers
     $scope.mapPoints = mapService.mapPoints;
 
+    //Data for graphs
     $scope.pieData = dataService.pieData;
 
     self.getPlotsList = function() {
@@ -23,6 +28,7 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
         return mapService.nbTotalCandidatures;
     };
 
+    //retourne le pourcentage de candidatures par rapport au total
     self.getPercentageFromTotalCandidatures = function (nbCandidature) {
         return (nbCandidature/self.getNbCandidatures()*100).toFixed(2);
     };
@@ -31,6 +37,7 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
         console.log(self.isMapUpdating())
     };
 
+    //Is called every time you update a filter
     self.refresh = function() {
         filterService.filter = self.filter;
         dataService.update();
@@ -38,6 +45,7 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
 
     };
 
+    //Notifies the user during API call
     self.isMapUpdating = function() {
 
         if(mapService.ajaxDone !== mapService.currentApiCall){
@@ -47,6 +55,7 @@ PBA.controller('AnalyzeCtrl', ['$scope', 'dataService', 'filterService', 'mapSer
 
     };
 
+    //Toggle info when a marker is clicked
     self.markerOnClick = function (event, item) {
 
         if (this.classList.contains('details-map-extended')) {
