@@ -2,15 +2,19 @@
 
 PBA.controller('AdminCtrl', ['$scope', 'dataService', 'filterService', function ($scope, dataService, filterService) {
     var self = this;
+    // list of plots actually loaded
     self.plots = dataService.plots;
+    // is a plot currently loading
     self.loading = false;
 
     self.update = function() {
         dataService.update();
     };
 
+    // trigger when a file is uploaded
     $scope.uploadFile = function(element) {
         var reader = new FileReader();
+        // get loaded files
         var files = element.files;
         var name = '';
         self.loading = true;
@@ -32,6 +36,7 @@ PBA.controller('AdminCtrl', ['$scope', 'dataService', 'filterService', function 
                             }
                         }
 
+                        // new plot object
                         var new_plot = {
                             name: name,
                             data: data,

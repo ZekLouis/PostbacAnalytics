@@ -3,8 +3,10 @@
 PBA.service('dataService',['filterService', 'mapService', function(filterService, mapService){
     var self = this;
     var seriesId = 0;
+    // plots table
     self.plots = [];
     self.plots_name_indexes = [];
+    // highcharts data
     self.pieData = {
         chart: {
             type: 'column'
@@ -26,6 +28,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         series: []
     };
 
+    // index that will be filled on plot import
     self.indexes = {
         'bac' : {
             'count' : 0,
@@ -46,6 +49,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
 
     self.mapCans = [];
 
+    // this function is triggered when a new plot is imported
     self.addNewPlot = function(new_plot) {
         self.plots.push(new_plot);
         self.plots_name_indexes.push(new_plot.name);
@@ -54,6 +58,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         self.generateIndexes(new_plot);
     };
 
+    // return plots list with an other format
     self.getPlotsList = function() {
         var list = [];
         for (var plot in self.plots) {
@@ -76,6 +81,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         return list;
     };
 
+    // this function update map plots
     self.updateMapPlots = function() {
 
         var mapCans = [];
@@ -171,6 +177,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
             var lotData = self.indexes[indexName].data[ilot];
             for (var ibac in lotData) {
                 var bac = filterService.bac_list[ibac];
+                // if this bac is not selected skip it
                 if (!bac.selected) {
                     continue;
                 }
@@ -183,6 +190,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                 var bac = lotData[ibac];
                 for (var candit in bac.data) {
                     candit = bac.data[candit];
+                    // increase counters regarding selected filter
                     switch (filter) {
                         case 'homme_femme':
                             if (candit['Sexe'] == 'M') {
@@ -271,6 +279,8 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
                     d[c].push(value[c])
                 }
             }
+
+            // add data to the highcharts data
             for (var data in d) {
                 graphData.data.push({
                     stack: lot.name,
@@ -337,6 +347,7 @@ PBA.service('dataService',['filterService', 'mapService', function(filterService
         }
     };
 
+    // return index of plot from its name
     self.getIndex = function(array, element) {
         for (var index in self.plots) {
             if (self.plots[index].name === element) {
